@@ -1,3 +1,5 @@
+from GCounter import GCounter
+
 import uuid
 
 class CacheNode:

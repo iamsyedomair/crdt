@@ -1,3 +1,6 @@
+from CacheNode import CacheNode
+from GCounter import GCounter 
+
 class DistributedCache:
     def __init__(self, num_nodes):
         self.nodes = [CacheNode() for _ in range(num_nodes)]
