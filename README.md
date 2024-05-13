@@ -5,7 +5,7 @@ to test
 > python3 test.py
 
 TODO
-    - Fault Tolerance
-    - Advanced Caching Strategies - like LRU
-    - better data collection and monitoring
-    - integration with existing CDN infrastructure
+- Fault Tolerance
+- Advanced Caching Strategies - like LRU
+- better data collection and monitoring
+- integration with existing CDN infrastructure
