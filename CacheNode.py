@@ -19,7 +19,9 @@ class CacheNode:
         counter.increment(self.node_id)
         self.cache[key + '_counter'] = counter
 
-    def merge_counters(self, key, other_counter):
+    def merge_counters(self, key, other_counters):
         counter = self.cache.get(key + '_counter', GCounter())
-        counter.merge(other_counter)
+        for other_counter in other_counters:
+            if other_counter is not None:
+                counter.merge(other_counter)
         self.cache[key + '_counter'] = counter
