@@ -1,26 +1,20 @@
+from ConsistentHash import ConsistentHash
 from CacheNode import CacheNode
-from GCounter import GCounter 
 
 class DistributedCache:
-    def __init__(self, num_nodes):
-        self.nodes = [CacheNode() for _ in range(num_nodes)]
+    def __init__(self, nodes, virtual_nodes=3):
+        self.nodes = [CacheNode() for _ in range(nodes)]
+        self.consistent_hash = ConsistentHash(self.nodes, virtual_nodes)
 
     def get(self, key):
-        for node in self.nodes:
-            value = node.get(key)
-            if value is not None:
-                return value
-        return None
+        node = self.consistent_hash.get_node(key)
+        return node.get(key)
 
     def put(self, key, value):
-        for node in self.nodes:
-            node.put(key, value)
+        node = self.consistent_hash.get_node(key)
+        node.put(key, value)
 
     def merge_counters(self, key):
-        counters = [node.get(key + '_counter') for node in self.nodes]
-        merged_counter = GCounter()
-        for counter in counters:
-            if counter is not None:
-                merged_counter.merge(counter)
-        for node in self.nodes:
-            node.merge_counters(key, merged_counter)
+        node = self.consistent_hash.get_node(key)
+        counters = [n.get(key + '_counter') for n in self.nodes if n != node]
+        node.merge_counters(key, counters)
